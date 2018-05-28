@@ -18,11 +18,9 @@ RSpec.describe CircuitBuilder do
   describe '#insert_nodes' do
     let(:nodes) { { node1: 'OR', node2: 'AND' } }
     it 'adds multiple nodes to the internal nodes array' do
-      subject.insert_nodes(nodes)
-      expect(assigns(:nodes)).to eq(node1: 'node', node2: 'node')
-      # expect { subject.insert_nodes(nodes) }
-      #   .to change { subject.nodes.count }
-      #   .from(0).to(2)
+      expect { subject.insert_nodes(nodes) }
+        .to change { subject.nodes.count }
+        .from(0).to(2)
     end
   end
 end
