@@ -1,13 +1,15 @@
 class CircuitBuilder
+  attr_accessor :nodes
+
   def self.build
     builder = new
     yield builder
     builder.circuit
   end
 
-  def initialize(*args)
+  def initialize(node_factory)
     @circuit = Circuit.new
-    @node_factory = args[:node_factory]
+    @node_factory = node_factory
     @nodes = {}
   end
 
@@ -24,6 +26,6 @@ class CircuitBuilder
   end
 
   def insert_node(name, type)
-    nodes[name] = node_factory.get_node(type)
+    @nodes[name] = @node_factory.get_node(type)
   end
 end
