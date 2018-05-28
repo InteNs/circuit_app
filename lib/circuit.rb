@@ -3,7 +3,6 @@ class Circuit
   attr_accessor :probes
 
   def print
-    puts "circuit printed"
+    puts 'circuit printed'
   end
 end
-

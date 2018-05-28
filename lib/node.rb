@@ -3,6 +3,5 @@ class Node
   attr_accessor :outputs
   attr_accessor :truth_table
 
-  def transfer
-  end
+  def transfer; end
 end
