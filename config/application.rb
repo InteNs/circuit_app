@@ -1,2 +1,2 @@
-Dir[File.join(__dir__, '../src', '*.rb')].each { |file| load file }
+Dir[File.join(__dir__, '../src', '**/*.rb')].each { |file| require file }
 puts 'app loaded'
