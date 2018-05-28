@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 require 'irb'
 require 'irb/completion'
-require_relative '../config/application.rb'
 
+def reload!
+  load File.expand_path('../../config/application.rb', __FILE__)
+end
+
+reload!
 IRB.start
