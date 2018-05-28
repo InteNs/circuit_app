@@ -23,4 +23,18 @@ RSpec.describe CircuitBuilder do
         .from(0).to(2)
     end
   end
+
+  describe 'temp' do
+    it 'is temp' do
+      circuit = subject.build do |builder|
+        builder.add_component('A', 'INPUT_LOW')
+        builder.add_component('B', 'INPUT_HIGH')
+        builder.add_component('NODE1', 'OR')
+        builder.add_component('AB', 'PROBE')
+        builder.add_connection('A', ['NODE1'])
+        builder.add_connection('B', ['NODE1'])
+        builder.add_connection('NODE1', ['AB'])
+      end
+    end
+  end
 end

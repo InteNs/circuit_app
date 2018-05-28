@@ -1,5 +1,5 @@
 class CircuitBuilder
-  attr_accessor :nodes
+  attr_accessor :components
 
   def self.build
     builder = new
@@ -7,25 +7,33 @@ class CircuitBuilder
     builder.circuit
   end
 
-  def initialize(node_factory)
+  def initialize(component_factory)
     @circuit = Circuit.new
-    @node_factory = node_factory
-    @nodes = {}
+    @component_factory = component_factory
+    @components = {}
   end
 
   # link the nodes together
 
-  def add_connection(input_name, output_names)
-    # TODO: implement
+  def add_connection(input, outputs)
+    conn = Connection.new(nil)
+    @Components[input].add_output(conn)
+    outputs.each do |output|
+      @components[output].add_input(conn)
+    end
+  end
+
+  def add_input(name, state)
+    @circuit.inputs[name] = @component_factory.get_component(state)
   end
 
   # add all the nodes
 
-  def insert_nodes(nodes)
-    nodes.each(&method(:insert_node))
+  def add_components(components)
+    components.each(&method(:add_component))
   end
 
-  def insert_node(name, type)
-    @nodes[name] = @node_factory.get_node(type)
+  def add_component(name, type)
+    @components[name] = @component_factory.get_component(type)
   end
 end

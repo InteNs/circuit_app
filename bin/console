@@ -3,7 +3,7 @@ require 'irb'
 require 'irb/completion'
 
 def reload!
-  load File.expand_path('../../config/application.rb', __FILE__)
+  require File.expand_path('../../config/application.rb', __FILE__)
 end
 
 reload!

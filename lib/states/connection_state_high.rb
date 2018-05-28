@@ -1,5 +1,5 @@
 class ConnectionStateHigh < ConnectionState
-  def transfer
-    # TODO: logic
+  def self.to_bool
+    true
   end
 end
