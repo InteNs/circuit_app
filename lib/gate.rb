@@ -7,11 +7,26 @@ class Gate < Component
   end
 
   def update
-    puts 'updating gate'
-    input = inputs.map { |conn| conn.state.to_bool }
-    result = @truth_table.fetch(input)
+    # stop if any input is nil
+    return if inputs.any? { |conn| conn.state.nil? }
+    # convert input list to boolean list
+    result = @truth_table.fetch(inputs.map(&:state))
+    # match the ouputs to the matching truth_table entry
     outputs.each_with_index do |conn, i|
-      conn.state = ConnectionState.from_bool(result[i])
+      conn.state = result[i]
     end
+  end
+end
+
+GateOr = Class.new(Gate) do
+  ComponentFactory.get_instance.register_component('OR', self)
+
+  def initialize
+    super(
+      [false, false] => [false],
+      [false, true]  => [true],
+      [true,  false] => [true],
+      [true,  true]  => [true]
+    )
   end
 end

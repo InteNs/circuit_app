@@ -1,32 +1,36 @@
 RSpec.describe CircuitBuilder do
-  let(:node_factory) { double('NodeFactory', get_node: 'node') }
-  subject { described_class.new(node_factory) }
+  let(:node) { Node.new }
+  let(:component_factory) { double('ComponentFactory', get_component: node) }
+  subject { described_class.new(component_factory) }
 
   it 'can be initialized with a factory' do
-    expect { CircuitBuilder.new(node_factory) }
+    expect { CircuitBuilder.new(component_factory) }
       .to_not raise_error
   end
 
-  describe '#insert_node' do
-    it 'adds a node to the internal nodes array' do
-      expect { subject.insert_node('test', 'OR') }
-        .to change { subject.nodes['test'] }
-        .from(nil).to('node')
+  describe '#add_component' do
+    it 'adds a component to the internal components array' do
+      expect { subject.add_component('test', 'OR') }
+        .to change { subject.components['test'] }
+        .from(nil).to(node)
     end
   end
 
-  describe '#insert_nodes' do
-    let(:nodes) { { node1: 'OR', node2: 'AND' } }
-    it 'adds multiple nodes to the internal nodes array' do
-      expect { subject.insert_nodes(nodes) }
-        .to change { subject.nodes.count }
+  describe '#add_components' do
+    let(:components) { { node1: 'OR', node2: 'AND' } }
+    it 'adds multiple components to the internal components array' do
+      expect { subject.add_components(components) }
+        .to change { subject.components.count }
         .from(0).to(2)
     end
   end
 
-  describe 'temp' do
-    it 'is temp' do
-      circuit = subject.build do |builder|
+  describe '#build' do
+    let(:component_factory) { ComponentFactory.new }
+    subject { described_class }
+    it 'takes a block with build commands' do
+      circuit = subject.build(component_factory) do |builder|
+        builder.add_name('or gate')
         builder.add_component('A', 'INPUT_LOW')
         builder.add_component('B', 'INPUT_HIGH')
         builder.add_component('NODE1', 'OR')
@@ -35,6 +39,10 @@ RSpec.describe CircuitBuilder do
         builder.add_connection('B', ['NODE1'])
         builder.add_connection('NODE1', ['AB'])
       end
+      expect(circuit.inputs.keys.count).to eq 2
+      expect(circuit.probes.keys.count).to eq 1
+      circuit.update
+      expect(circuit.probes['AB'].state).to eq true
     end
   end
 end

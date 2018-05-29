@@ -1,25 +1,21 @@
 class ComponentFactory
+  attr_accessor :component_registry
+  attr_accessor :state_registry
+
   def initialize
-    @tables = {
-      'OR' => {
-        [false, false] => [false],
-        [false, true]  => [true],
-        [true,  false] => [true],
-        [true,  true]  => [true]
-      }
-    }
+    @component_registry = {}
+
+    register_component('INPUT_LOW', NodeLow)
+    register_component('INPUT_HIGH', NodeHigh)
+    register_component('PROBE', Node)
+    register_component('OR', GateOr)
   end
 
   def get_component(type)
-    case type
-    when 'INPUT_LOW'
-      Node.new(ConnectionStateLow)
-    when 'INPUT_HIGH'
-      Node.new(ConnectionStateHigh)
-    when 'PROBE'
-      Node.new(nil)
-    else
-      Gate.new(@tables.fetch(type))
-    end
+    @component_registry[type].new
+  end
+
+  def register_component(name, type)
+    @component_registry[name] = type
   end
 end

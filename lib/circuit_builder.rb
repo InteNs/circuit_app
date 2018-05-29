@@ -1,8 +1,9 @@
 class CircuitBuilder
   attr_accessor :components
+  attr_accessor :circuit
 
-  def self.build
-    builder = new
+  def self.build(component_factory)
+    builder = new(component_factory)
     yield builder
     builder.circuit
   end
@@ -13,27 +14,35 @@ class CircuitBuilder
     @components = {}
   end
 
-  # link the nodes together
+  def add_name(name)
+    @circuit.name = name
+  end
 
-  def add_connection(input, outputs)
+  # link the components to eachother
+
+  def add_connection(start_comp, end_comps)
     conn = Connection.new(nil)
-    @Components[input].add_output(conn)
-    outputs.each do |output|
-      @components[output].add_input(conn)
+    @components[start_comp].add_output(conn)
+    end_comps.each do |end_comp|
+      @components[end_comp].add_input(conn)
     end
   end
 
-  def add_input(name, state)
-    @circuit.inputs[name] = @component_factory.get_component(state)
-  end
-
-  # add all the nodes
+  # add components to the circuit
 
   def add_components(components)
     components.each(&method(:add_component))
   end
 
   def add_component(name, type)
-    @components[name] = @component_factory.get_component(type)
+    component = @component_factory.get_component(type)
+
+    if type.start_with? 'INPUT'
+      @circuit.inputs[name] = component
+    elsif type.eql? 'PROBE'
+      @circuit.probes[name] = component
+    end
+
+    @components[name] = component
   end
 end

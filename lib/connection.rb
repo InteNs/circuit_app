@@ -4,13 +4,17 @@ class Connection
   include Observable
   attr_reader :state
 
-  def initialize(state = ConnectionStateLow)
+  def initialize(state = false)
     @state = state
   end
 
   def state=(state)
     @state = state
-    changed
+    notify
+  end
+
+  def notify
+    changed true
     notify_observers
   end
 end

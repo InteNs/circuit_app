@@ -2,7 +2,7 @@ RSpec.describe Gate do
   describe 'OR' do
     subject { ComponentFactory.new.get_component('OR') }
 
-    context 'when the gate has 2 inputs' do
+    context 'when the gate has input A and B' do
       let(:a) { Connection.new }
       let(:b) { Connection.new }
       let(:ab) { Connection.new }
@@ -13,10 +13,13 @@ RSpec.describe Gate do
         subject.add_output(ab)
       end
 
-      it 'outputs high' do
-        a.state = ConnectionStateHigh
-        expect(subject.outputs.first.state)
-          .to eq ConnectionStateHigh
+      context 'and input a is high' do
+        it 'sets output ab to high' do
+          expect { a.state = true }
+            .to change { ab.state }
+            .from(false)
+            .to(true)
+        end
       end
     end
   end
