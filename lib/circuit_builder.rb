@@ -21,10 +21,8 @@ class CircuitBuilder
   # link the components to eachother
 
   def add_connection(start_comp, end_comps)
-    conn = Connection.new(nil)
-    @components[start_comp].add_output(conn)
     end_comps.each do |end_comp|
-      @components[end_comp].add_input(conn)
+      @components[end_comp].add_input(@components[start_comp])
     end
   end
 

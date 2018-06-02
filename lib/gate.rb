@@ -6,14 +6,8 @@ class Gate < Component
     super()
   end
 
-  def simulate
-    # stop if any input is nil
-    return if inputs.any? { |conn| conn.state.nil? }
-    #  convert input list to boolean list
-    result = @truth_table.fetch(inputs.map(&:state))
-    # match the ouputs to the matching truth_table entry
-    outputs.each_with_index do |conn, i|
-      conn.state = result[i]
-    end
+  def signal(requester)
+    signals = @truth_table.fetch(inputs.map(&:signal))
+    signals[outputs.index(requester)]
   end
 end

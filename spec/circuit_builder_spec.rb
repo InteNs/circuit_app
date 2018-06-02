@@ -43,8 +43,7 @@ RSpec.describe CircuitBuilder do
       end
       expect(circuit.inputs.keys.count).to eq 2
       expect(circuit.probes.keys.count).to eq 1
-      circuit.update
-      expect(circuit.probes['AB'].state).to eq true
+      expect(circuit.probes['AB'].signal).to eq true
     end
   end
 end

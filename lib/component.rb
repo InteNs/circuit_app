@@ -8,18 +8,17 @@ class Component
     @delay_in_ns = 15
   end
 
-  def add_input(conn)
-    conn.add_observer(self)
-    inputs << conn
+  def add_input(component)
+    return if inputs.include? component
+    inputs << component
+    component.add_output(self)
   end
 
-  def add_output(conn)
-    outputs << conn
+  def add_output(component)
+    return if outputs.include? component
+    outputs << component
+    component.add_input(self)
   end
 
-  def update
-    simulate
-  end
-
-  def simulate; end
+  def signal(_requester); end
 end

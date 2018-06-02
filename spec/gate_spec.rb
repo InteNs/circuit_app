@@ -3,9 +3,9 @@ RSpec.describe Gate do
     subject { ComponentFactory.instance.get_component('OR') }
 
     context 'when the gate has input A and B' do
-      let(:a) { Connection.new }
-      let(:b) { Connection.new }
-      let(:ab) { Connection.new }
+      let(:a) { NodeLow.new }
+      let(:b) { NodeLow.new }
+      let(:ab) { Probe.new }
 
       before do
         subject.add_input(a)
@@ -16,7 +16,7 @@ RSpec.describe Gate do
       context 'and input a is high' do
         it 'sets output ab to high' do
           expect { a.state = true }
-            .to change { ab.state }
+            .to change { ab.signal }
             .from(false)
             .to(true)
         end
