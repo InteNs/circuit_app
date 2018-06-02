@@ -5,6 +5,7 @@ class Component
   def initialize
     @inputs = []
     @outputs = []
+    @delay_in_ns = 15
   end
 
   def add_input(conn)
@@ -17,5 +18,8 @@ class Component
   end
 
   def update
+    simulate
   end
+
+  def simulate; end
 end

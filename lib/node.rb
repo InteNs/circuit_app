@@ -6,8 +6,7 @@ class Node < Component
     super()
   end
 
-  def update
-    super
+  def simulate
     # TODO: for now just read the first input if present
     inputs.first && @state = inputs.first.state
     outputs.each { |conn| conn.state = @state }

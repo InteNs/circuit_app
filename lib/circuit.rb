@@ -8,8 +8,8 @@ class Circuit
     @probes = {}
   end
 
-  def update
+  def simulate
     raise 'invalid' if inputs.any? { |_name, conn| conn.state.nil? }
-    inputs.each_value(&:update)
+    inputs.each_value(&:simulate)
   end
 end
