@@ -1,6 +1,8 @@
 RSpec.describe CircuitBuilder do
-  let(:node) { Node.new }
-  let(:component_factory) { double('ComponentFactory', get_component: node) }
+  let(:component) { Probe.new }
+  let(:component_factory) do
+    double('ComponentFactory', get_component: component)
+  end
   subject { described_class.new(component_factory) }
 
   it 'can be initialized with a factory' do
@@ -12,7 +14,7 @@ RSpec.describe CircuitBuilder do
     it 'adds a component to the internal components array' do
       expect { subject.add_component('test', 'OR') }
         .to change { subject.components['test'] }
-        .from(nil).to(node)
+        .from(nil).to(component)
     end
   end
 
@@ -26,7 +28,7 @@ RSpec.describe CircuitBuilder do
   end
 
   describe '#build' do
-    let(:component_factory) { ComponentFactory.new }
+    let(:component_factory) { ComponentFactory.instance }
     subject { described_class }
     it 'takes a block with build commands' do
       circuit = subject.build(component_factory) do |builder|

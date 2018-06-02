@@ -1,18 +1,14 @@
+require 'singleton'
+
 class ComponentFactory
-  attr_accessor :component_registry
-  attr_accessor :state_registry
+  include Singleton
 
   def initialize
     @component_registry = {}
-
-    register_component('INPUT_LOW', NodeLow)
-    register_component('INPUT_HIGH', NodeHigh)
-    register_component('PROBE', Node)
-    register_component('OR', GateOr)
   end
 
   def get_component(type)
-    @component_registry[type].new
+    @component_registry.fetch(type).new
   end
 
   def register_component(name, type)

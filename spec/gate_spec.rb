@@ -1,6 +1,6 @@
 RSpec.describe Gate do
   describe 'OR' do
-    subject { ComponentFactory.new.get_component('OR') }
+    subject { ComponentFactory.instance.get_component('OR') }
 
     context 'when the gate has input A and B' do
       let(:a) { Connection.new }
