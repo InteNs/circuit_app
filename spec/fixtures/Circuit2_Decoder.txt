@@ -1,5 +1,5 @@
 # Decoder, maakt van 3 bitjes input het getal 1 tot en met 8 door 8 outputs te hebben.
-# Let op: Je and-node moet 3 inputs aan kunnen in dit geval.
+# Let op: Je AND-node moet 3 inputs aan kunnen in dit geval.
 # Voor meer info: http://coep.vlab.co.in/?sub=28&brch=81&sim=609&cnt=1
 #
 # Description of all the nodes
