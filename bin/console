@@ -32,4 +32,13 @@ def build_circuit(parsed_components, parsed_connections)
 
   end
 end
+
+def print_circuit(circuit)
+  tp = TreePrinter.new
+  tp.is_branch    = proc { |node| node.children.any? }
+  tp.get_children = proc { |node| node.children }
+  tp.format_node  = proc { |node| node.to_s }
+  puts tp.format(circuit)
+end
+
 IRB.start

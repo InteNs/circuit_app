@@ -4,8 +4,4 @@ class Probe < Node
   def initialize
     super(nil)
   end
-
-  def signal(_requester = nil)
-    inputs.first.signal(self)
-  end
 end

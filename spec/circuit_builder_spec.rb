@@ -48,7 +48,7 @@ RSpec.describe CircuitBuilder do
 
   describe 'print' do
     let(:or_circuit) do
-      subject.build do |builder|
+      described_class.new(component_factory, circuit_factory).build do |builder|
         builder.add_component('A', 'INPUT_LOW')
         builder.add_component('B', 'INPUT_LOW')
         builder.add_component('NODE1', 'OR')
@@ -59,43 +59,24 @@ RSpec.describe CircuitBuilder do
       end
     end
 
-    def print_component(component)
-      if component.is_a? Node
-        print " | (#{component.class})#{component.name}: #{component.signal} | "
-      else
-        print "(#{component.class})#{component.name}"
-      end
-
-      puts
-      puts
-
-      component.inputs.each do |input|
-        if input.is_a? Node
-          print " | (#{input.class})#{input.name}: #{input.signal} | "
-        else
-          print " | (#{input.class})#{input.name} | "
-        end
-
-        puts
-        puts
-
-        input.inputs.each do |input|
-          if input.is_a? Node
-            print " | (#{input.class})#{input.name}: #{input.signal} | "
-          else
-            print " | (#{input.class})#{input.name} | "
-          end
-        end
-      end
-    end
-
     it 'prints a circuit' do
-      or_circuit.probes.each do |p|
-        print_component(p)
+      circuit_factory.register_prototype 'or_circuit', or_circuit
+      circuit = described_class.new(component_factory, circuit_factory).build do |builder|
+        builder.add_component 'Ain',      'INPUT_LOW'
+        builder.add_component 'Bin',      'INPUT_HIGH'
+        builder.add_circuit   'inner_or', 'or_circuit'
+        builder.add_component 'ABout',    'PROBE'
+
+        builder.add_connection 'Ain',      ['inner_or']
+        builder.add_connection 'Bin',      ['inner_or']
+        builder.add_connection 'inner_or', ['ABout']
       end
 
-      require 'pry'
-      binding.pry
+      tp = TreePrinter.new
+      tp.is_branch    = proc { |node| node.children.any? }
+      tp.get_children = proc { |node| node.children }
+      tp.format_node  = proc { |node| node.to_s }
+      puts tp.format(circuit)
     end
   end
 end

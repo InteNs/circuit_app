@@ -11,7 +11,6 @@ class Component
 
   def add_input(component)
     return if inputs.include? component
-    puts "adding input #{component.name} to #{name}"
     inputs << component
     component.add_output(self)
   end
@@ -35,4 +34,12 @@ class Component
   end
 
   def signal(_requester); end
+
+  def to_s
+    "#{name}<#{self.class}>"
+  end
+
+  def children
+    inputs
+  end
 end

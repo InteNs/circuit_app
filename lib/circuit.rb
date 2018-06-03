@@ -12,7 +12,8 @@ class Circuit < Component
 
   def add_input(component)
     return if inputs.include? component
-    first_empty_input&.add_input(component) || inputs << component
+    first_empty_node&.add_input(component)
+    inputs << component
   end
 
   def add_probe(component)
@@ -29,7 +30,11 @@ class Circuit < Component
     probes.map(&:signal)[index || outputs.index(requester)]
   end
 
-  def first_empty_input
-    inputs.find { |i| i.inputs.empty? }
+  def first_empty_node
+    nodes.find { |i| i.inputs.empty? }
+  end
+
+  def children
+    probes
   end
 end

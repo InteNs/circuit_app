@@ -1,3 +1,5 @@
+require 'colorize'
+
 class Node < Component
   ComponentFactory.instance.register_component('INPUT', self)
   attr_accessor :signal
@@ -8,12 +10,20 @@ class Node < Component
   end
 
   def signal(_requester = nil)
-    inputs.first &.signal(self) || @signal
+    if inputs.any?
+      inputs.first&.signal(self)
+    else
+      @signal
+    end
   end
 
   def add_input(component)
     return if inputs.include? component
     remove_input(inputs.first) if inputs.any?
     super(component)
+  end
+
+  def to_s
+    super.send(signal ? :green : :red)
   end
 end
