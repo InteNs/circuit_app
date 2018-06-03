@@ -6,8 +6,30 @@ def reload!
   require File.expand_path('../../config/application.rb', __FILE__)
 end
 
+reload!
 def import_circuit(name, file)
+  file_parser = FileParser.new(file)
+  build(file_parser.parse)
 end
 
-reload!
+def build(parsed_circuit)
+  circuit = build_circuit(parsed_circuit[0],parsed_circuit[1])
+end
+
+def build_circuit(parsed_components, parsed_connections)
+  builder = CircuitBuilder.new(
+    ComponentFactory.instance,
+    CircuitFactory.instance
+  )
+
+  builder.build do |builder|
+    parsed_components.each { |key, value|
+      builder.add_component(key,value)
+    }
+    parsed_connections.each {|key, value|
+      builder.add_connection(key,value)
+      }
+
+  end
+end
 IRB.start
