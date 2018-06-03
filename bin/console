@@ -1,12 +1,8 @@
 #!/usr/bin/env ruby
 require 'irb'
 require 'irb/completion'
+require File.expand_path('../../config/application.rb', __FILE__)
 
-def reload!
-  require File.expand_path('../../config/application.rb', __FILE__)
-end
-
-reload!
 def import_circuit(name, file)
   file_parser = FileParser.new(file)
   build(file_parser.parse)
@@ -40,5 +36,7 @@ def print_circuit(circuit)
   tp.format_node  = proc { |node| node.to_s }
   puts tp.format(circuit)
 end
+
+print_circuit(import_circuit('name', "/Users/intens/Projects/School/circuit_app/spec/fixtures/Circuit1_FullAdder.txt"))
 
 IRB.start

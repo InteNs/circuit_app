@@ -36,7 +36,6 @@ class FileParser
   end
 
   def blank_line?(line)
-    string = "#{line.chars.to_s[2]}#{line.chars.to_s[3]}"
-    string == '\r'
+    line.eql? "\n"
   end
 end

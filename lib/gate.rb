@@ -7,7 +7,23 @@ class Gate < Component
   end
 
   def signal(requester)
-    signals = @truth_table.fetch(inputs.map { |i| i.signal(self) })
-    signals[outputs.index(requester)]
+    input_signals = inputs.map { |i| i.signal(self) }
+    signals = @truth_table.fetch(input_signals)
+
+    index = outputs.index(requester)
+
+    if index + 1 > signals.count
+      signals.first
+    else
+      signals[index]
+    end
+  end
+
+  def to_s
+    if signal(outputs.first)
+      super.green
+    else
+      super.red
+    end
   end
 end

@@ -10,10 +10,10 @@ class Node < Component
   end
 
   def signal(_requester = nil)
-    if inputs.any?
-      inputs.first&.signal(self)
-    else
+    if inputs.empty?
       @signal
+    else
+      inputs.first&.signal(self)
     end
   end
 
