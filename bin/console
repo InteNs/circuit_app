@@ -9,17 +9,4 @@ def application_context
   @application_context ||= Context.new(StateDefault.new)
 end
 
-def start
-  application_context.go_next
-end
-
-def print_circuit(circuit)
-  tp = TreePrinter.new
-  tp.is_branch    = proc { |node| node.children.any? }
-  tp.get_children = proc { |node| node.children }
-  tp.format_node  = proc { |node| node.to_s }
-  puts tp.format(circuit)
-end
-
-start
-IRB.start
+application_context.go_next

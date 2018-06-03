@@ -14,7 +14,7 @@ class CircuitBuilder
   end
 
   # link the components to eachother
-  
+
   def add_name(name)
     @circuit.name = name
   end
