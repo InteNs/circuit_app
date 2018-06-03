@@ -30,10 +30,15 @@ class CircuitBuilder
   end
 
   def add_component(name, type)
+    if type.start_with? 'CIRCUIT_'
+      add_circuit(name, type)
+      return
+    end
+
     component = @component_factory.get_component(type)
     component.name = name
 
-    if type.start_with? 'INPUT'
+    if type.start_with? 'INPUT_'
       @circuit.add_node(component)
     elsif type.eql? 'PROBE'
       @circuit.add_probe(component)
