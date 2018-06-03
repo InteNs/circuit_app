@@ -1,6 +1,9 @@
 class StateDefault < State
   def print
-    'Please enter a circuit file to be parsed'
+    "
+    The following commands are available:
+    import_circuit(<name>, <file_path>) - to import a circuit from a text file
+    "
   end
 
   def go_next(context)
