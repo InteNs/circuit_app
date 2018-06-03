@@ -24,6 +24,10 @@ class Node < Component
   end
 
   def to_s
-    super.send(signal ? :green : :red)
+    if signal
+      super.green
+    else
+      super.red
+    end
   end
 end

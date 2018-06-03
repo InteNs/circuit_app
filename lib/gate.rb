@@ -7,7 +7,7 @@ class Gate < Component
   end
 
   def signal(requester)
-    signals = @truth_table.fetch(inputs.map(&:signal))
+    signals = @truth_table.fetch(inputs.map { |i| i.signal(self) })
     signals[outputs.index(requester)]
   end
 end
