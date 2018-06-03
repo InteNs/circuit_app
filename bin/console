@@ -9,7 +9,5 @@ end
 def import_circuit(name, file)
 end
 
-def 
-
 reload!
 IRB.start

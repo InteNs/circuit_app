@@ -1,9 +1,11 @@
-require 'component'
+require_rel 'component'
 
 class Circuit < Component
   attr_accessor :probes
+  attr_accessor :nodes
 
   def initialize
+    @nodes = Connection.new
     @probes = Connection.new
     super
   end
@@ -16,6 +18,11 @@ class Circuit < Component
   def add_probe(component)
     return if probes.include? component
     probes << component
+  end
+
+  def add_node(component)
+    return if nodes.include? component
+    nodes << component
   end
 
   def signal(requester, index = nil)

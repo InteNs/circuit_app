@@ -23,10 +23,6 @@ class CircuitBuilder
 
   # add components to the circuit
 
-  def add_components(components)
-    components.each(&method(:add_component))
-  end
-
   def add_circuit(name, type)
     circuit = @circuit_factory.get_circuit(type)
     circuit.name = name
@@ -38,7 +34,7 @@ class CircuitBuilder
     component.name = name
 
     if type.start_with? 'INPUT'
-      @circuit.add_input(component)
+      @circuit.add_node(component)
     elsif type.eql? 'PROBE'
       @circuit.add_probe(component)
     end

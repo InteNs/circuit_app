@@ -1,27 +1,15 @@
 RSpec.describe CircuitBuilder do
-  let(:component) { Probe.new }
-  let(:component_factory) do
-    double('ComponentFactory', get_component: component)
-  end
-  let(:circuit_factory) { CircuitFactory.instance }
   subject { described_class.new(component_factory, circuit_factory) }
+  let(:component_factory) { ComponentFactory.instance }
+  let(:circuit_factory)   { CircuitFactory.instance }
 
-  describe '#add_component' do
-    it 'adds a component to the internal components array' do
-      expect { subject.add_component('test', 'OR') }
-        .to change { subject.components['test'] }
-        .from(nil).to(component)
-    end
-  end
-
-  describe '#add_components' do
-    let(:components) { { node1: 'OR', node2: 'AND' } }
-    it 'adds multiple components to the internal components array' do
-      expect { subject.add_components(components) }
-        .to change { subject.components.count }
-        .from(0).to(2)
-    end
-  end
+  # describe '#add_component' do
+  #   it 'adds a component to the internal components array' do
+  #     expect { subject.add_component('test', 'OR') }
+  #       .to change { subject.components['test'] }
+  #       .from(nil).to(component)
+  #   end
+  # end
 
   describe '#build' do
     let(:or_circuit) do
@@ -34,9 +22,6 @@ RSpec.describe CircuitBuilder do
         builder.add_connection('B', ['NODE1'])
         builder.add_connection('NODE1', ['AB'])
       end
-    end
-
-    before do
     end
 
     let(:component_factory) { ComponentFactory.instance }
@@ -58,6 +43,59 @@ RSpec.describe CircuitBuilder do
       end
 
       expect(circuit.probes['ABout'].signal).to eq true
+    end
+  end
+
+  describe 'print' do
+    let(:or_circuit) do
+      subject.build do |builder|
+        builder.add_component('A', 'INPUT_LOW')
+        builder.add_component('B', 'INPUT_LOW')
+        builder.add_component('NODE1', 'OR')
+        builder.add_component('AB', 'PROBE')
+        builder.add_connection('A', ['NODE1'])
+        builder.add_connection('B', ['NODE1'])
+        builder.add_connection('NODE1', ['AB'])
+      end
+    end
+
+    def print_component(component)
+      if component.is_a? Node
+        print " | (#{component.class})#{component.name}: #{component.signal} | "
+      else
+        print "(#{component.class})#{component.name}"
+      end
+
+      puts
+      puts
+
+      component.inputs.each do |input|
+        if input.is_a? Node
+          print " | (#{input.class})#{input.name}: #{input.signal} | "
+        else
+          print " | (#{input.class})#{input.name} | "
+        end
+
+        puts
+        puts
+
+        input.inputs.each do |input|
+          if input.is_a? Node
+            print " | (#{input.class})#{input.name}: #{input.signal} | "
+          else
+            print " | (#{input.class})#{input.name} | "
+          end
+        end
+      end
+    end
+
+    it 'prints a circuit' do
+      or_circuit.probes.each do |p|
+        print_component(p)
+      end
+
+      require 'pry'
+      binding.pry
     end
   end
 end

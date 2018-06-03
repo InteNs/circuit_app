@@ -11,6 +11,7 @@ class Component
 
   def add_input(component)
     return if inputs.include? component
+    puts "adding input #{component.name} to #{name}"
     inputs << component
     component.add_output(self)
   end
