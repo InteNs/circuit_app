@@ -15,7 +15,7 @@ RSpec.describe Gate do
 
       context 'and input a is high' do
         it 'sets output ab to high' do
-          expect { a.state = true }
+          expect { a.signal = true }
             .to change { ab.signal }
             .from(false)
             .to(true)

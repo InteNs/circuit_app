@@ -6,5 +6,10 @@ def reload!
   require File.expand_path('../../config/application.rb', __FILE__)
 end
 
+def import_circuit(name, file)
+end
+
+def 
+
 reload!
 IRB.start

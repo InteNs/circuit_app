@@ -1,21 +1,16 @@
 class CircuitBuilder
   attr_accessor :components
-  attr_accessor :circuit
 
-  def self.build(component_factory)
-    builder = new(component_factory)
-    yield builder
-    builder.circuit
+  def build
+    yield self
+    @circuit
   end
 
-  def initialize(component_factory)
+  def initialize(component_factory, circuit_factory)
     @circuit = Circuit.new
     @component_factory = component_factory
+    @circuit_factory = circuit_factory
     @components = {}
-  end
-
-  def add_name(name)
-    @circuit.name = name
   end
 
   # link the components to eachother
@@ -32,13 +27,20 @@ class CircuitBuilder
     components.each(&method(:add_component))
   end
 
+  def add_circuit(name, type)
+    circuit = @circuit_factory.get_circuit(type)
+    circuit.name = name
+    @components[name] = circuit
+  end
+
   def add_component(name, type)
     component = @component_factory.get_component(type)
+    component.name = name
 
     if type.start_with? 'INPUT'
-      @circuit.inputs[name] = component
+      @circuit.add_input(component)
     elsif type.eql? 'PROBE'
-      @circuit.probes[name] = component
+      @circuit.add_probe(component)
     end
 
     @components[name] = component

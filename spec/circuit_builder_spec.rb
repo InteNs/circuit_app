@@ -3,12 +3,8 @@ RSpec.describe CircuitBuilder do
   let(:component_factory) do
     double('ComponentFactory', get_component: component)
   end
-  subject { described_class.new(component_factory) }
-
-  it 'can be initialized with a factory' do
-    expect { CircuitBuilder.new(component_factory) }
-      .to_not raise_error
-  end
+  let(:circuit_factory) { CircuitFactory.instance }
+  subject { described_class.new(component_factory, circuit_factory) }
 
   describe '#add_component' do
     it 'adds a component to the internal components array' do
@@ -28,22 +24,40 @@ RSpec.describe CircuitBuilder do
   end
 
   describe '#build' do
-    let(:component_factory) { ComponentFactory.instance }
-    subject { described_class }
-    it 'takes a block with build commands' do
-      circuit = subject.build(component_factory) do |builder|
-        builder.add_name('or gate')
+    let(:or_circuit) do
+      subject.build do |builder|
         builder.add_component('A', 'INPUT_LOW')
-        builder.add_component('B', 'INPUT_HIGH')
+        builder.add_component('B', 'INPUT_LOW')
         builder.add_component('NODE1', 'OR')
         builder.add_component('AB', 'PROBE')
         builder.add_connection('A', ['NODE1'])
         builder.add_connection('B', ['NODE1'])
         builder.add_connection('NODE1', ['AB'])
       end
-      expect(circuit.inputs.keys.count).to eq 2
-      expect(circuit.probes.keys.count).to eq 1
-      expect(circuit.probes['AB'].signal).to eq true
+    end
+
+    before do
+    end
+
+    let(:component_factory) { ComponentFactory.instance }
+    it 'builds a simple circuit' do
+      expect(or_circuit.probes['AB'].signal).to eq false
+    end
+
+    it 'builds a circuit containing circuits' do
+      circuit_factory.register_prototype 'or_circuit', or_circuit
+      circuit = subject.build do |builder|
+        builder.add_component 'Ain',      'INPUT_LOW'
+        builder.add_component 'Bin',      'INPUT_HIGH'
+        builder.add_circuit   'inner_or', 'or_circuit'
+        builder.add_component 'ABout',    'PROBE'
+
+        builder.add_connection 'Ain',      ['inner_or']
+        builder.add_connection 'Bin',      ['inner_or']
+        builder.add_connection 'inner_or', ['ABout']
+      end
+
+      expect(circuit.probes['ABout'].signal).to eq true
     end
   end
 end

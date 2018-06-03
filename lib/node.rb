@@ -1,12 +1,19 @@
 class Node < Component
-  attr_accessor :state
+  ComponentFactory.instance.register_component('INPUT', self)
+  attr_accessor :signal
 
-  def initialize(state)
-    @state = state
+  def initialize(signal)
+    @signal = signal
     super()
   end
 
   def signal(_requester = nil)
-    @state
+    inputs.first &.signal(self) || @signal
+  end
+
+  def add_input(component)
+    return if inputs.include? component
+    remove_input(inputs.first) if inputs.any?
+    super(component)
   end
 end
