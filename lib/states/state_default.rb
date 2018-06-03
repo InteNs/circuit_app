@@ -1,13 +1,16 @@
 class StateDefault < State
-  def print
-    "
-    The following commands are available:
-    import_circuit(<name>, <file_path>) - to import a circuit from a text file
-    "
-  end
-
   def go_next(context)
-    context.state = StateParsed.new
-  end
+    actions = {
+      import: StateImport,
+      load: StateLoad
+    }
+    cli.say "Welcome to Logic Gate Simulator 2018!"
 
+    cli.choose do |menu|
+      menu.prompt = "Please choose an action"
+      actions.each do |action, state|
+        menu.choice(action) { context.state = state.new }
+      end
+    end
+  end
 end

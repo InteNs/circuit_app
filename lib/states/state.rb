@@ -1,9 +1,10 @@
 class State
-  def self.print
-    raise 'implement in subclass'
+  attr_accessor :cli
+  def initialize
+    @cli = HighLine.new
   end
 
-  def go_next(context)
+  def go_next(_context)
     raise 'implement in subclass'
   end
 end

@@ -4,5 +4,6 @@
 # end
 
 require 'require_all'
+require 'highline'
 
 require_all 'lib/**/*.rb'

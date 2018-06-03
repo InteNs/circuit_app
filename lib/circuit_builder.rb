@@ -14,6 +14,10 @@ class CircuitBuilder
   end
 
   # link the components to eachother
+  
+  def add_name(name)
+    @circuit.name = name
+  end
 
   def add_connection(start_comp, end_comps)
     end_comps.each do |end_comp|

@@ -14,6 +14,10 @@ class CircuitFactory
     circuit_prototypes[name] = circuit
   end
 
+  def available_circuits
+    circuit_prototypes.keys
+  end
+
   def get_circuit(name)
     prototype = circuit_prototypes.fetch(name)
     DeepClone.clone(prototype)

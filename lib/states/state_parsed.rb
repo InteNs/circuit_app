@@ -1,6 +1,6 @@
 class StateParsed < State
-  def print
-    'The file has been parsed as the following circuit'
+  def prompt
+    
   end
 
   def go_next(context)
