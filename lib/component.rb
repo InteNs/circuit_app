@@ -39,6 +39,10 @@ class Component
     "#{name}<#{self.class}>"
   end
 
+  def valid?
+    true
+  end
+
   def children
     inputs
   end

@@ -4,4 +4,8 @@ class Probe < Node
   def initialize
     super(nil)
   end
+
+  def valid?
+    inputs.any?
+  end
 end

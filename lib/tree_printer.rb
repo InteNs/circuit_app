@@ -11,7 +11,7 @@ class TreePrinter
     @out = ""
     @is_branch    = proc { |node| node.children.any? }
     @get_children = proc { |node| node.children }
-    @format_node  = proc { |node| node.name }
+    @format_node  = proc { |node| node.to_s }
     @skip_root_node = false
   end
 

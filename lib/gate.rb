@@ -19,6 +19,10 @@ class Gate < Component
     end
   end
 
+  def valid?
+    inputs.count == @truth_table.keys.first.count
+  end
+
   def to_s
     if signal(outputs.first)
       super.green

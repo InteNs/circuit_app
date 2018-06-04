@@ -1,7 +1,7 @@
 class StateImport < State
-  def initialize(nodes: [], conns: [])
+  def initialize(nodes: [], connections: [])
     @nodes = nodes
-    @connections = conns
+    @connections = connections
   end
 
   def go_next(context)
@@ -24,7 +24,16 @@ class StateImport < State
       end
     end
 
-    context.circuit = circuit
-    context.state = StateLoaded.new
+    valid = CircuitValidator.new(circuit).validate
+
+    ValidateCircuitView.new(valid: valid).show
+
+    if valid
+      context.circuit = circuit
+      context.state = StateLoaded.new
+    else
+      context.circuit = nil
+      context.state = StateDefault.new
+    end
   end
 end

@@ -5,6 +5,6 @@ class StateParsed < State
     nodes, connections = FileParser.new(path).parse
 
     ParseView.new(nodes: nodes, conns: connections).show
-    context.state = StateImport.new(nodes: nodes, conns: connections)
+    context.state = StateValidate.new(nodes: nodes, connections: connections)
   end
 end

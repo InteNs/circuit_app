@@ -18,11 +18,15 @@ class View
   end
 
   def error(string)
-    cli.say "-> #{string}".colorize(color: :light_red)
+    cli.say "!> #{string}".colorize(color: :light_red)
   end
 
   def ask(string)
     cli.ask "?> #{string}  ".colorize(color: :magenta)
+  end
+
+  def say(string)
+    cli.say string
   end
 
   def menu(prompt)
