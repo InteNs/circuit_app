@@ -22,4 +22,3 @@ class Connection < Array
     val.is_a? Integer
   end
 end
-

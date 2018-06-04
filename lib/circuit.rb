@@ -1,5 +1,3 @@
-require_rel 'component'
-
 class Circuit < Component
   attr_accessor :probes
   attr_accessor :nodes

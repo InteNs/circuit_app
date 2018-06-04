@@ -9,27 +9,27 @@ class TreePrinter
     @arms[""]  = ""
     @arms["`"] = "    "
     @out = ""
-    @is_branch    = proc{|node| FileTest.directory?(node) && FileTest.readable?(node) }
-    @get_children = proc{|node| node.children(false).sort}
-    @format_node  = proc{|node| node.name}
+    @is_branch    = proc { |node| node.children.any? }
+    @get_children = proc { |node| node.children }
+    @format_node  = proc { |node| node.name }
     @skip_root_node = false
   end
-  
-  def visit(path, leader, tie, arm, node)
-    if(@root == node) && skip_root_node
+
+  def visit(_path, leader, tie, arm, node)
+    if (@root == node) && skip_root_node
       # skip
     else
       node_str = @format_node.call(node)
       @out << "#{leader}|\n"
       @out << "#{leader}#{arm}#{tie}#{node_str}\n"
     end
-    visitChildren(node, leader + @arms[arm])
+    visit_children(node, leader + @arms[arm])
     @out
   end
-  
-  def visitChildren(path, leader)
+
+  def visit_children(path, leader)
     kids = []
-    if(@root == path) && skip_root_node
+    if (@root == path) && skip_root_node
       kids = path
     else
       return unless @is_branch.call(path)
@@ -38,11 +38,11 @@ class TreePrinter
     return if kids.empty?
     arms = Array.new(kids.length - 1, "|") << "`"
     pairs = kids.zip(arms)
-    pairs.each { |e|  visit(path, leader, "-- ", e[1], e[0]) } 
+    pairs.each { |e| visit(path, leader, "-- ", e[1], e[0]) }
   end
 
   def format(root)
     @root = root
-    visit root, "", "", "", root 
+    visit root, "", "", "", root
   end
 end

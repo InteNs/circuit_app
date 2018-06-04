@@ -1,9 +1,10 @@
 class StateParsed < State
-  def prompt
-    
-  end
-
   def go_next(context)
-    context.state = StateSimulated.new
+    path = FileView.new.show
+
+    nodes, connections = FileParser.new(path).parse
+
+    ParseView.new(nodes: nodes, conns: connections).show
+    context.state = StateImport.new(nodes: nodes, conns: connections)
   end
 end

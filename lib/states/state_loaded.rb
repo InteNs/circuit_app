@@ -1,14 +1,9 @@
 class StateLoaded < State
   def go_next(context)
-    cli.say "circuit #{context.circuit.name} has been loaded"
+    view = CircuitLoadedView.new(circuit: context.circuit)
+    view.show
 
-    cli.say "the following inputs are set:"
-    context.circuit.nodes.each do |node|
-      cli.say "node #{node.name} -> #{node.signal}"
-    end
-
-    cli.choose do |menu|
-      menu.prompt = "what do you want to do?"
+    view.menu("what do you want to do?") do |menu|
       menu.choice(:simulate) do
         context.state = StateSimulated.new
       end
