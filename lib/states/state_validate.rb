@@ -7,7 +7,7 @@ class StateValidate < State
 
   def go_next(context)
     validator = GraphValidator.new(@connections)
-    valid = !validator.cycle?
+    valid = validator.validate
 
     ValidateGraphView.new(valid: valid).show
 

@@ -1,0 +1,38 @@
+# Unconnected Pins
+#
+#
+#
+# Description of all the nodes
+#
+A1:	INPUT_HIGH;
+B1:	INPUT_HIGH;
+A2:	INPUT_LOW;
+B2:	INPUT_LOW;
+A3:	INPUT_HIGH;
+B3:	INPUT_HIGH;
+Cin:    INPUT_LOW;
+S1:	PROBE;
+S2:	PROBE;
+S3:	PROBE;
+Cout:	PROBE;
+ADDER1:	CIRCUIT_full_adder;
+ADDER2:	CIRCUIT_full_adder;
+ADDER3:	CIRCUIT_full_adder;
+
+
+#
+#
+# Description of all the edges
+#
+Cin:	ADDER1;
+A1:	ADDER1;
+B1:	ADDER1;
+A2:	ADDER2;
+B2:	ADDER2;
+A3:	ADDER3;
+B3:	ADDER3;
+ADDER3:	Cout,S3;
+ADDER2:	ADDER3,S2;
+ADDER1:	ADDER2,S1;
+
+

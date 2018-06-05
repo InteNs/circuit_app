@@ -32,7 +32,15 @@ class Circuit < Component
     nodes.find { |i| i.inputs.empty? }
   end
 
+  def to_s
+    "#{super} #{probes.map { |p| "#{p.name}: #{p.signal}" }}"
+  end
+
   def children
-    probes
+    if inputs.any?
+      inputs
+    else
+      probes
+    end
   end
 end

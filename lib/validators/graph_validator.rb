@@ -3,8 +3,8 @@ class GraphValidator
     @connections = graph(connections)
   end
 
-  def cycle?
-    strongly_connected_components(@connections).select { |a| a.length > 1 }.any?
+  def validate
+    strongly_connected_components(@connections).select { |a| a.length > 1 }.none?
   end
 
   private
