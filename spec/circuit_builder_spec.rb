@@ -45,38 +45,4 @@ RSpec.describe CircuitBuilder do
       expect(circuit.probes['ABout'].signal).to eq true
     end
   end
-
-  describe 'print' do
-    let(:or_circuit) do
-      described_class.new(component_factory, circuit_factory).build do |builder|
-        builder.add_component('A', 'INPUT_LOW')
-        builder.add_component('B', 'INPUT_LOW')
-        builder.add_component('NODE1', 'OR')
-        builder.add_component('AB', 'PROBE')
-        builder.add_connection('A', ['NODE1'])
-        builder.add_connection('B', ['NODE1'])
-        builder.add_connection('NODE1', ['AB'])
-      end
-    end
-
-    it 'prints a circuit' do
-      circuit_factory.register_prototype 'or_circuit', or_circuit
-      circuit = described_class.new(component_factory, circuit_factory).build do |builder|
-        builder.add_component 'Ain',      'INPUT_LOW'
-        builder.add_component 'Bin',      'INPUT_HIGH'
-        builder.add_circuit   'inner_or', 'or_circuit'
-        builder.add_component 'ABout',    'PROBE'
-
-        builder.add_connection 'Ain',      ['inner_or']
-        builder.add_connection 'Bin',      ['inner_or']
-        builder.add_connection 'inner_or', ['ABout']
-      end
-
-      tp = TreePrinter.new
-      tp.is_branch    = proc { |node| node.children.any? }
-      tp.get_children = proc { |node| node.children }
-      tp.format_node  = proc { |node| node.to_s }
-      puts tp.format(circuit)
-    end
-  end
 end
