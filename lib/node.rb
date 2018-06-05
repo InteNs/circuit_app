@@ -17,6 +17,10 @@ class Node < Component
     end
   end
 
+  def switch
+    @signal = !@signal
+  end
+
   def add_input(component)
     return if inputs.include? component
     remove_input(inputs.first) if inputs.any?

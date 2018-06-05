@@ -1,5 +1,10 @@
 class EditCircuitView < View
+  def initialize(name:)
+    @name = name
+    super
+  end
+
   def show
-    cli.info "Not implemented yet :("
+    info "you are editing circuit #{@name}"
   end
 end

@@ -12,6 +12,7 @@ class StateDefault < State
       actions.each do |action, state|
         menu.choice(action) { context.state = state.new }
       end
+      menu.choice(:quit) { exit }
     end
   end
 end

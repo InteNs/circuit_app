@@ -4,12 +4,10 @@ class StateLoaded < State
     view.show
 
     view.menu("what do you want to do?") do |menu|
-      menu.choice(:simulate) do
-        context.state = StateSimulated.new
-      end
-      menu.choice(:edit) do
-        context.state = StateEdit.new
-      end
+      menu.choice(:simulate) { context.state = StateSimulated.new }
+      menu.choice(:edit) { context.state = StateEdit.new }
+      menu.choice(:save) { context.state = StateSaved.new }
+      menu.choice(:main) { context.state = StateDefault.new }
     end
   end
 end
