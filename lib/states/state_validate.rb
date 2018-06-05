@@ -11,6 +11,13 @@ class StateValidate < State
 
     ValidateGraphView.new(valid: valid).show
 
+    validator = ComponentValidator.new(@nodes)
+    if !validator.validate
+      valid = false
+    end
+
+    ValidateComponentView.new(valid: valid).show
+
     if valid
       context.state = StateImport.new(nodes: @nodes, connections: @connections)
     else

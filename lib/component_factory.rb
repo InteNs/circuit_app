@@ -7,6 +7,10 @@ class ComponentFactory
     @component_registry = {}
   end
 
+  def available_components
+    @component_registry.keys
+  end
+
   def get_component(type)
     @component_registry.fetch(type).new
   end
