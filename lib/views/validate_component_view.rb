@@ -1,16 +1,15 @@
 class ValidateComponentView < View
-  def initialize(valid:)
-    @valid = valid
+  def initialize(not_found:)
+    @not_found = not_found
     super
   end
 
   def show
     info "scanning components..."
-    if @valid
+    if @not_found.empty?
       success "components recognized!"
     else
-      error "some components are not recognized"
+      error "#{@not_found.count} components are not recognized"
     end
-    
   end
 end

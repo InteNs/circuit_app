@@ -5,9 +5,11 @@ class CircuitLoadedView < View
   end
 
   def show
-    info "----------------------------------------------------------"
+    info "-----------------------"
     info "[name]"
     info "    #{@circuit.name}"
+    info "[delay]"
+    info "    #{@circuit.propagation_delay} nanoseconds"
 
     info "[inputs]"
     @circuit.nodes.each do |node|
@@ -15,8 +17,8 @@ class CircuitLoadedView < View
     end
     info "[probes]"
     @circuit.probes.each do |probe|
-      info "    #{probe.name}"
+      info "    #{probe.name} -> #{probe.signal}"
     end
-    info "----------------------------------------------------------".blue
+    info "-----------------------"
   end
 end

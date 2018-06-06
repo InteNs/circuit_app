@@ -5,6 +5,7 @@ class StateSaved < State
       context.circuit
     )
     SavedView.new(name: context.circuit.name).show
-    context.state = StateLoaded.new
+    context.circuit = nil
+    context.state = StateDefault.new
   end
 end

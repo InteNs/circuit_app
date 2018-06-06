@@ -2,8 +2,9 @@ class Gate < Component
   attr_accessor :truth_table
 
   def initialize(truth_table)
-    @truth_table = truth_table
     super()
+    @truth_table = truth_table
+    @delay_in_ns = 15
   end
 
   def signal(requester)

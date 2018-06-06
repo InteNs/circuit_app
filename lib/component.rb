@@ -2,11 +2,12 @@ class Component
   attr_accessor :inputs
   attr_accessor :outputs
   attr_accessor :name
+  attr_accessor :delay_in_ns
 
   def initialize
     @inputs = Connection.new
     @outputs = Connection.new
-    @delay_in_ns = 15
+    @delay_in_ns = 0
   end
 
   def add_input(component)
@@ -31,6 +32,10 @@ class Component
     return unless outputs.include? component
     outputs.delete(component)
     component.remove_input(self)
+  end
+
+  def propagation_delay
+    children.uniq.sum(&:propagation_delay) + @delay_in_ns
   end
 
   def signal(_requester); end

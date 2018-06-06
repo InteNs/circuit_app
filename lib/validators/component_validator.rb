@@ -4,11 +4,11 @@ class ComponentValidator
   end
 
   def validate
-    @components.all? { |comp| in_factory?(comp) }
+    invalid = @components.reject { |name, type| in_factory?(type) }
   end
 
-  def in_factory?(name)
-    ComponentFactory.instance.available_components.include?(name) ||
-      CircuitFactory.instance.available_circuits.include?(name)
+  def in_factory?(type)
+    ComponentFactory.instance.available_components.include?(type) ||
+      CircuitFactory.instance.available_circuits.include?(type)
   end
 end

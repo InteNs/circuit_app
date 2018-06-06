@@ -3,9 +3,9 @@ class Circuit < Component
   attr_accessor :nodes
 
   def initialize
+    super
     @nodes = Connection.new
     @probes = Connection.new
-    super
   end
 
   def add_input(component)
